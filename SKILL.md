@@ -1,9 +1,9 @@
-# plain-speak — agent skill: de-slop rewriting
+# slop-lint — agent skill: de-slop rewriting
 
-`plain-speak` (CLI, single file `plain_speak.py`) **detects** AI-register slop.
+`slop-lint` (CLI, single file `slop_lint.py`) **detects** AI-register slop.
 This skill tells you how to **rewrite** what it flags. Workflow:
 
-1. Run `plain-speak check draft.txt` (or `--json`).
+1. Run `slop-lint check draft.txt` (or `--json`).
 2. For each flagged line, pick a rung on the reading-level ladder below and rewrite.
 3. Re-run until `plainness` passes your `--fail-under` gate.
 
@@ -94,11 +94,11 @@ TEXT:
 <flagged text>
 ```
 
-Then re-run `plain-speak check` — the score is the referee, not your taste.
+Then re-run `slop-lint check` — the score is the referee, not your taste.
 
 ## Rules of thumb (all rungs)
 
 - **Buzzword → concrete swap cheat sheet:** leverage→use · utilize→use · delve→dig into / look at · robust→holds up when X · seamless→no extra steps · holistic→whole · synergy→working together · paradigm→model / way · landscape→field · realm→area · furthermore/moreover/additionally→and, or just start the sentence · foster→help grow · elevate→raise / improve · navigate→handle · underscore→show · unlock the potential→makes possible.
 - **Long sentence fix:** split at the "and/which/that" joint. If it survives splitting, it wasn't too long.
 - **Hedge fix:** "might arguably perhaps" → pick the strongest true claim and state it. If you genuinely don't know, say "unknown" once.
-- **Never** add new buzzwords while rewriting. Re-run `plain-speak check` after — the score is the referee, not your taste.
+- **Never** add new buzzwords while rewriting. Re-run `slop-lint check` after — the score is the referee, not your taste.

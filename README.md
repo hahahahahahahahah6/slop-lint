@@ -1,42 +1,42 @@
-# plain-speak
+# slop-lint
 
-You can spot AI-written text in three seconds: the 60-word sentence that never lands, the "leverage the robust tapestry" filler, the "furthermore / moreover / additionally" drumbeat, the hedge pile ("might arguably perhaps be"). Grammar checkers don't catch any of this — the grammar is perfect; the *register* is the problem. **plain-speak** is a tiny readability linter that scores text on plainness and flags the offending lines, so you (or your agent) can de-slop a draft before it ships.
+You can spot AI-written text in three seconds: the 60-word sentence that never lands, the "leverage the robust tapestry" filler, the "furthermore / moreover / additionally" drumbeat, the hedge pile ("might arguably perhaps be"). Grammar checkers don't catch any of this — the grammar is perfect; the *register* is the problem. **slop-lint** is a tiny readability linter that scores text on plainness and flags the offending lines, so you (or your agent) can de-slop a draft before it ships.
 
 **v0.2.0 adds a full Chinese rule set** — AI-flavor word lists (L1 absolute bans / L2 advisories), the "不是 A，而是 B" contrast cliché, an em-dash quota (≤2 per text), translationese patterns, and 套话开场/收尾 detection. One tool, two languages, zero dependencies.
 
 ## Install
 
 ```bash
-pip install plain-speak
+pip install slop-lint
 ```
 
 Or from source:
 
 ```bash
-git clone https://github.com/hahahahahahahahah6/plain-speak
-cd plain-speak
-python3 plain_speak.py check draft.txt
+git clone https://github.com/hahahahahahahahah6/slop-lint
+cd slop-lint
+python3 slop_lint.py check draft.txt
 ```
 
 Or just grab the single file — it's stdlib-only, no dependencies:
 
 ```bash
-curl -O https://raw.githubusercontent.com/hahahahahahahahah6/plain-speak/main/plain_speak.py
-python3 plain_speak.py check draft.txt
+curl -O https://raw.githubusercontent.com/hahahahahahahahah6/slop-lint/main/slop_lint.py
+python3 slop_lint.py check draft.txt
 ```
 
-Python 3.9+. The examples below write `plain-speak` — that's shorthand for
-`python3 plain_speak.py` (symlink it onto your PATH as `plain-speak` if you
+Python 3.9+. The examples below write `slop-lint` — that's shorthand for
+`python3 slop_lint.py` (symlink it onto your PATH as `slop-lint` if you
 like).
 
 ## Usage
 
 ```bash
-plain-speak check draft.txt          # check a file
-cat draft.txt | plain-speak check     # or pipe stdin
-plain-speak check draft.txt --json   # machine-readable output
-plain-speak check draft.txt --fail-under 80   # exit 1 when score < 80 (for CI)
-plain-speak check draft.md --lang zh # force Chinese rules (default: auto-detect)
+slop-lint check draft.txt          # check a file
+cat draft.txt | slop-lint check     # or pipe stdin
+slop-lint check draft.txt --json   # machine-readable output
+slop-lint check draft.txt --fail-under 80   # exit 1 when score < 80 (for CI)
+slop-lint check draft.md --lang zh # force Chinese rules (default: auto-detect)
 ```
 
 `--lang` takes `auto` (detect CJK, default), `en` (English rules only), or
@@ -66,7 +66,7 @@ Chinese sentences are split on 。！？； and measured in effective words (eac
 Example:
 
 ```
-$ plain-speak check draft.txt
+$ slop-lint check draft.txt
 plainness: 45/100 (slop)
 sentences: 3  words: 80  reading ease: 30.7
 long sentences: 2  buzzwords: 24  hedges: 2
@@ -107,7 +107,7 @@ LINE   RULE           DETAIL
 And a plain passage:
 
 ```
-$ echo "Cats sleep most of the day. Give your cat fresh water every day." | plain-speak check
+$ echo "Cats sleep most of the day. Give your cat fresh water every day." | slop-lint check
 plainness: 100/100 (plain)
 sentences: 2  words: 14  reading ease: 97.0
 long sentences: 0  buzzwords: 0  hedges: 0
@@ -118,13 +118,13 @@ No findings. Nice and plain.
 CI gate example — fail the build when a generated doc is too sloppy:
 
 ```bash
-plain-speak check release-notes.md --fail-under 80
+slop-lint check release-notes.md --fail-under 80
 ```
 
 A Chinese example:
 
 ```
-$ echo "在当今这个快节奏的时代，说白了，我们要赋能业务，实现降本增效。这不是运气，而是实力。" | plain-speak check
+$ echo "在当今这个快节奏的时代，说白了，我们要赋能业务，实现降本增效。这不是运气，而是实力。" | slop-lint check
 plainness: 81/100 (mostly plain)
 sentences: 2  words: 0  reading ease: 100.0
 long sentences: 0  buzzwords: 0  hedges: 0
@@ -142,9 +142,9 @@ LINE   RULE                 DETAIL
 
 ## Differentiation
 
-Grammar checkers (Grammarly, LanguageTool) fix grammar. That's a different problem: AI slop is *grammatically flawless*. What plain-speak targets is the AI **register** — the specific constellation of marathon sentences, abstraction buzzwords, and hedge piles that makes generated text instantly recognizable.
+Grammar checkers (Grammarly, LanguageTool) fix grammar. That's a different problem: AI slop is *grammatically flawless*. What slop-lint targets is the AI **register** — the specific constellation of marathon sentences, abstraction buzzwords, and hedge piles that makes generated text instantly recognizable.
 
-And it does it **bilingually**. Chinese AI-slop detectors exist (notably the excellent [de-ai-smell](https://github.com/xiaoshuai1024/skills) skill by xiaoshuai, MIT-licensed — plain-speak's Chinese word lists and behavioral norms are adapted from it, with attribution), but they ship Chinese-only docs and target article/narration workflows. plain-speak is:
+And it does it **bilingually**. Chinese AI-slop detectors exist (notably the excellent [de-ai-smell](https://github.com/xiaoshuai1024/skills) skill by xiaoshuai, MIT-licensed — slop-lint's Chinese word lists and behavioral norms are adapted from it, with attribution), but they ship Chinese-only docs and target article/narration workflows. slop-lint is:
 
 - **One bilingual rule set** — English buzzword/hedge detection and Chinese L1/L2 + 句式红线 rules in a single stdlib-only file, with CJK-aware sentence splitting and word counting.
 - **English docs** — the README, rule IDs, and finding messages are all in English, so it drops into English-language CI/agent pipelines without translation.
@@ -153,7 +153,7 @@ And it does it **bilingually**. Chinese AI-slop detectors exist (notably the exc
 It's also built for agents, not just humans:
 
 - `--json` and `--fail-under` make it a CI gate for generated docs.
-- The repo ships a **`SKILL.md`** agent skill with a reading-level ladder (ELI5 / engineer / one-liner, plus a Chinese rung): prompt templates an agent uses to *rewrite* flagged text. The CLI detects; the skill rewrites. Pair them in a loop: `plain-speak check` → rewrite with the skill → check again until the score passes.
+- The repo ships a **`SKILL.md`** agent skill with a reading-level ladder (ELI5 / engineer / one-liner, plus a Chinese rung): prompt templates an agent uses to *rewrite* flagged text. The CLI detects; the skill rewrites. Pair them in a loop: `slop-lint check` → rewrite with the skill → check again until the score passes.
 
 ## License
 

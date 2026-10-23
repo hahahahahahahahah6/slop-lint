@@ -3,7 +3,7 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "plain-speak"
+name = "slop-lint"
 version = "0.2.0"
 description = "Bilingual (EN/ZH) readability linter: scores AI-generated text on plainness and flags AI-register slop"
 readme = "README.md"
@@ -21,10 +21,10 @@ classifiers = [
 ]
 
 [project.scripts]
-plain-speak = "plain_speak:main"
+slop-lint = "slop_lint:main"
 
 [project.urls]
-Homepage = "https://github.com/hahahahahahahahah6/plain-speak"
+Homepage = "https://github.com/hahahahahahahahah6/slop-lint"
 
 [tool.setuptools]
-py-modules = ["plain_speak"]
+py-modules = ["slop_lint"]
